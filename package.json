@@ -1,6 +1,6 @@
 {
   "name": "chopsticks",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "more greedy argument parser like a minimist!",
   "main": "lib",
   "files": [
@@ -16,7 +16,7 @@
     "cover:test": "nyc --reporter=lcov --reporter=text mocha",
     "cover:report": "node -e \"if(process.env.TRAVIS){}else{process.exit(1)}\" && codeclimate-test-reporter < coverage/lcov.info || echo skip coverage report",
     "build": "cross-env NODE_ENV=production rollup -c",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "abigail": {
     "plugins": {
