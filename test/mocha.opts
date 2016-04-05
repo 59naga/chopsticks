@@ -1,0 +1,5 @@
+test
+--recursive
+--compilers js:babel-register
+--bail
+--reporter dot
