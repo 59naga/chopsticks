@@ -1,5 +1,5 @@
 // dependencies
-import assert from 'power-assert';
+import deepStrictEqual from 'deep-strict-equal';
 
 // target
 import * as utils from '../src/utils';
@@ -8,14 +8,14 @@ import * as utils from '../src/utils';
 describe('Chopsticks::parseArg', () => {
   describe('no-flag', () => {
     it('unless flag, should not return the flag', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-', 'foo'),
         {
           flags: [],
           validNext: false,
         },
       );
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('--', 'foo'),
         {
           flags: [],
@@ -23,7 +23,7 @@ describe('Chopsticks::parseArg', () => {
         },
       );
 
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('foo', 'bar'),
         {
           flags: [],
@@ -35,7 +35,7 @@ describe('Chopsticks::parseArg', () => {
 
   describe('short', () => {
     it('if string exists in next to the hyphen, each character should be a flag', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-foo'),
         {
           flags: [
@@ -47,7 +47,7 @@ describe('Chopsticks::parseArg', () => {
         },
       );
 
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-foo'),
         {
           flags: [
@@ -58,7 +58,7 @@ describe('Chopsticks::parseArg', () => {
           validNext: false,
         },
       );
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-👺🍣🎴'),
         {
           flags: [
@@ -72,7 +72,7 @@ describe('Chopsticks::parseArg', () => {
     });
 
     it("if the next argument isn't a flag, it should be used as the value of the last flag", () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-foo', 'bar'),
         {
           flags: [
@@ -86,7 +86,7 @@ describe('Chopsticks::parseArg', () => {
     });
 
     it('if including the "=" to the flag name, it should be used as a value', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-i=foo', 'foo'),
         {
           flags: [
@@ -96,7 +96,7 @@ describe('Chopsticks::parseArg', () => {
         },
       );
 
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('--=foo', 'foo'),
         {
           flags: [],
@@ -106,7 +106,7 @@ describe('Chopsticks::parseArg', () => {
 
       // minimist@1.2.0 was broken
       // require('minimist')(['-foo=foo']) -> { _: [], f: 'foo' }
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-foo=foo', 'foo'),
         {
           flags: [
@@ -121,7 +121,7 @@ describe('Chopsticks::parseArg', () => {
 
     // @see https://github.com/substack/minimist/blob/1.2.0/test/short.js#L4-L11
     it('if the numbers are after the flag name, it should be used as a value', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-n123', 'foo'),
         {
           flags: [
@@ -134,7 +134,7 @@ describe('Chopsticks::parseArg', () => {
       // minimist-v1.2.0 was broken
       // require('minimist')((['-n0xdeadbeef']))
       // -> { '0': true, _: [],n: true,x: true,d: true,e: true,a: true,b: true,f: true }
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-foo0xdeadbeef', 'foo'),
         {
           flags: [
@@ -146,7 +146,7 @@ describe('Chopsticks::parseArg', () => {
         },
       );
 
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-0123', 'foo'),
         {
           flags: [
@@ -161,7 +161,7 @@ describe('Chopsticks::parseArg', () => {
     });
 
     it('if including a slash to the flag name, it should be used as a value', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-i/foo/bar/', 'foo'),
         {
           flags: [
@@ -171,7 +171,7 @@ describe('Chopsticks::parseArg', () => {
         },
       );
 
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-/foo/', 'foo'),
         {
           flags: [
@@ -189,7 +189,7 @@ describe('Chopsticks::parseArg', () => {
 
   describe('long', () => {
     it('if hyphens are two, it should be treated as a single flag', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('--f'),
         {
           flags: [
@@ -199,7 +199,7 @@ describe('Chopsticks::parseArg', () => {
         },
       );
 
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('--foo'),
         {
           flags: [
@@ -211,7 +211,7 @@ describe('Chopsticks::parseArg', () => {
     });
 
     it('if flag have no value and next argument is not flag, should set next argument as value', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('--foo', 'bar'),
         {
           flags: [
@@ -221,7 +221,7 @@ describe('Chopsticks::parseArg', () => {
         },
       );
 
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('--foo', '-bar'),
         {
           flags: [
@@ -231,7 +231,7 @@ describe('Chopsticks::parseArg', () => {
         },
       );
 
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('--foo', 1234),
         {
           flags: [
@@ -243,7 +243,7 @@ describe('Chopsticks::parseArg', () => {
     });
 
     it('if the flag name begins with "--no-", the value should be false', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('--no-foo'),
         {
           flags: [
@@ -258,7 +258,7 @@ describe('Chopsticks::parseArg', () => {
     // require('minimist')(['--no-foo=false', 'bar'])
     // -> { _: [ 'bar' ], 'no-foo': 'false' }
     it('if including the "=" to the flag name, should ignore the "--no-"', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('--no-foo=false'),
         {
           flags: [
@@ -272,7 +272,7 @@ describe('Chopsticks::parseArg', () => {
 
   describe('dash', () => {
     it('', () => {
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-n', '-'),
         {
           flags: [
@@ -281,14 +281,14 @@ describe('Chopsticks::parseArg', () => {
           validNext: true,
         },
       );
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-'),
         {
           flags: [],
           validNext: false,
         },
       );
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-f-'),
         {
           flags: [
@@ -297,7 +297,7 @@ describe('Chopsticks::parseArg', () => {
           validNext: false,
         },
       );
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-b', '-', { booleans: ['b'] }),
         {
           flags: [
@@ -306,7 +306,7 @@ describe('Chopsticks::parseArg', () => {
           validNext: false,
         },
       );
-      assert.deepStrictEqual(
+      deepStrictEqual(
         utils.parseArg('-s', '-', { strings: ['s'] }),
         {
           flags: [
@@ -324,7 +324,7 @@ describe('Chopsticks::parseArg', () => {
         const options = {
           booleans: ['z'],
         };
-        assert.deepStrictEqual(
+        deepStrictEqual(
           utils.parseArg('-z', 'one', options),
           {
             flags: [
@@ -334,7 +334,7 @@ describe('Chopsticks::parseArg', () => {
           },
         );
 
-        assert.deepStrictEqual(
+        deepStrictEqual(
           utils.parseArg('-z', 'true', options),
           {
             flags: [
@@ -350,7 +350,7 @@ describe('Chopsticks::parseArg', () => {
         const options = {
           all: 'boolean',
         };
-        assert.deepStrictEqual(
+        deepStrictEqual(
           utils.parseArg('--z', 'one', options),
           {
             flags: [
@@ -369,7 +369,7 @@ describe('Chopsticks::parseArg', () => {
           aliases: { h: 'herp' },
           booleans: ['herp'],
         };
-        assert.deepStrictEqual(
+        deepStrictEqual(
           utils.parseArg('-h', 'derp', options),
           {
             flags: [

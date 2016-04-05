@@ -1,5 +1,6 @@
 // dependencies
 import assert from 'power-assert';
+import deepStrictEqual from 'deep-strict-equal';
 import sinon from 'sinon';
 
 // target
@@ -84,13 +85,13 @@ describe('use many options(high complexity)', () => {
       bar: true,
     };
 
-    assert.deepStrictEqual(parse(aliased, opts), expected);
-    assert.deepStrictEqual(parse(regular, opts), expected);
-    assert.deepStrictEqual(parse(alt, opts), expected);
+    deepStrictEqual(parse(aliased, opts), expected);
+    deepStrictEqual(parse(regular, opts), expected);
+    deepStrictEqual(parse(alt, opts), expected);
   });
 
   it('', () => {
-    assert.deepStrictEqual(
+    deepStrictEqual(
       parse(['-h', 'derp'], {
         boolean: 'herp',
         alias: { h: 'herp' },
