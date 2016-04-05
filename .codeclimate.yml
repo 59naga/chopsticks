@@ -1,0 +1,10 @@
+engines:
+  eslint:
+    enabled: false
+ratings:
+  paths:
+  - src/**
+  - test/**
+  - "**.js"
+exclude_paths:
+  - test-minimist-v1.2.0
