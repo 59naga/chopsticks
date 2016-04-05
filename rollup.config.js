@@ -13,6 +13,6 @@ export default {
     npm({ jsnext: true }),
     commonjs(),
     babel(),
-    uglify(),
+    // uglify(),
   ],
 };
