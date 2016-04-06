@@ -106,13 +106,13 @@ export function getAttribute(flagObject, opts = {}) {
 /**
 * check the valid argument for flagObject
 *
-* @module isVaildValue
+* @module isValidValue
 * @param {object} flagObject - a flag define
 * @param {string} arg - a command line argument
 * @param {Chopsticks} opts - a chopsticks instance(Chopsticks.parse options)
 * @returns {boolean} isVaild
 */
-export function isVaildValue(flagObject, arg, opts = {}) {
+export function isValidValue(flagObject, arg, opts = {}) {
   // @see github.com/substack/minimist/blob/1.2.0/test/num.js#L31
   const latter = typeof arg === 'string' ? arg : String(arg);
 
@@ -210,7 +210,7 @@ export function parseArg(arg, nextArg, opts = {}) {
   let validNext = false;
   const lastFlag = flags[flags.length - 1];
   if (lastFlag.value === undefined && nextArg !== undefined) {
-    if (isVaildValue(lastFlag, nextArg, opts)) {
+    if (isValidValue(lastFlag, nextArg, opts)) {
       lastFlag.value = nextArg;
       validNext = true;
     }
