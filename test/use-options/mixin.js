@@ -85,13 +85,13 @@ describe('use many options(high complexity)', () => {
       bar: true,
     };
 
-    deepStrictEqual(parse(aliased, opts), expected);
-    deepStrictEqual(parse(regular, opts), expected);
-    deepStrictEqual(parse(alt, opts), expected);
+    assert(deepStrictEqual(parse(aliased, opts), expected));
+    assert(deepStrictEqual(parse(regular, opts), expected));
+    assert(deepStrictEqual(parse(alt, opts), expected));
   });
 
   it('', () => {
-    deepStrictEqual(
+    assert(deepStrictEqual(
       parse(['-h', 'derp'], {
         boolean: 'herp',
         alias: { h: 'herp' },
@@ -101,7 +101,7 @@ describe('use many options(high complexity)', () => {
         flagCount: 2,
         _: ['derp'],
       },
-    );
+    ));
   });
 
   // @see github.com/substack/minimist/blob/1.2.0/test/bool.js#L144-L166
@@ -206,7 +206,7 @@ describe('use many options(high complexity)', () => {
     assert(params.ccc.ddd === 11);
   });
 
-  it('', () => {
+  it('should process z only as unknown', () => {
     const opts = {
       alias: {
         foo: ['f', 'o', 'o'],

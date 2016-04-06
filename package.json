@@ -7,23 +7,23 @@
     "lib"
   ],
   "scripts": {
+    "start": "abby mocha, build, tap --watch",
     "test": "abby build, tap, cover",
-    "start": "mocha --watch",
     "tap-watch": "abby build, tap --watch --log",
     "tap": "cross-env NODE_ENV=minimist tap test-minimist-v1.2.0/*.js",
+    "mocha": "cross-env NODE_ENV=chopsticks mocha",
     "lint": "eslint src test",
     "cover": "abby cover:*",
-    "cover:test": "nyc --reporter=lcov --reporter=text mocha",
+    "cover:test": "nyc --reporter=lcov --reporter=text cross-env NODE_ENV=chopsticks mocha",
     "cover:report": "node -e \"if(process.env.TRAVIS){}else{process.exit(1)}\" && codeclimate-test-reporter < coverage/lcov.info || echo skip coverage report",
     "build": "cross-env NODE_ENV=production rollup -c",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "abigail": {
     "plugins": {
       "log": false,
       "watch": false,
-      "parse": "serial",
-      "launch": "force"
+      "parse": "serial"
     }
   },
   "devDependencies": {

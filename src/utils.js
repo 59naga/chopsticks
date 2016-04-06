@@ -1,6 +1,12 @@
 import arrayFrom from 'array-from';
 
-// quote https://github.com/substack/minimist/blob/1.2.0/index.js#L231-L235
+/**
+* quote https://github.com/substack/minimist/blob/1.2.0/index.js#L231-L235
+*
+* @module isNumber
+* @param {any} value - a target
+* @returns {boolean} isNumber
+*/
 export function isNumber(value) {
   if (typeof value === 'number') {
     return true;
@@ -11,16 +17,27 @@ export function isNumber(value) {
   return /^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(e[-+]?\d+)?$/.test(value);
 }
 
+/**
+* @module toArray
+* @param {any} value - not an array
+* @returns {any[]} array
+*/
 export function toArray(value) {
-  if (value === undefined) {
+  if (value === undefined || value === null) {
     return [];
   }
-  if (value === true) {
+  if (typeof value === 'boolean') {
     return [];
   }
   return value instanceof Array ? value : [value];
 }
 
+/**
+* @module resolveName
+* @param {string} flag - an unknown alias flag
+* @param {object} aliases - an define of aliases
+* @returns {string} flag - the original name
+*/
 export function resolveName(flag, aliases = {}) {
   for (const origin in aliases) {
     if (origin === flag) {
@@ -33,28 +50,68 @@ export function resolveName(flag, aliases = {}) {
   return flag;
 }
 
+/**
+* @module getAttribute
+* @param {object} flagObject - a flag object (via utils.parseArg)
+* @param {Chopsticks} opts - a chopsticks instance(Chopsticks.parse options)
+* @returns {object} attribute - the flag definition information
+*   - "source": return true if defined flag in key of opts.alias
+*   - "alias": return true if defined flag in opts.alias
+*   - "boolean": return true if defined flag in opts.boolean via opts.alias
+*   - "string": return true if defined flag in opts.string via opts.alias
+*   - "array": return true if defined flag in opts.array via opts.alias
+*   - "unknown": return true if above is all false
+*/
 export function getAttribute(flagObject, opts = {}) {
-  if (opts.all === 'boolean' && flagObject.type === 'long' && flagObject.value === undefined) {
-    return 'boolean';
-  }
-  if (opts.booleans.indexOf(flagObject.origin) > -1) {
-    return 'boolean';
-  }
-  if (opts.strings.indexOf(flagObject.origin) > -1) {
-    return 'string';
-  }
-  if (flagObject.origin !== flagObject.name) {
-    return 'alias';
-  }
+  let boolean = false;
+  let string = false;
+  let array = false;
+
+  const names = [flagObject.origin].concat(flagObject.alias || []);
+  names.forEach((name) => {
+    if (boolean === false) {
+      if (opts.booleans.indexOf(name) > -1) {
+        boolean = true;
+      }
+    }
+    // @see github.com/substack/minimist/blob/1.2.0/test/all_bool.js#L18
+    if (boolean === false) {
+      boolean = opts.all === 'boolean' && flagObject.type === 'long' && flagObject.value === undefined;
+    }
+    if (string === false) {
+      if (opts.strings.indexOf(name) > -1) {
+        string = true;
+      }
+    }
+    if (array === false) {
+      if (opts.arrays.indexOf(name) > -1) {
+        array = true;
+      }
+    }
+  });
+
+  let source = false;
   for (const origin in opts.aliases) {
     if (origin === flagObject.name) {
-      return 'source';
+      source = true;
+      break;
     }
   }
+  const alias = flagObject.origin !== flagObject.name;
+  const unknown = (source || alias || boolean || string || array) === false;
 
-  return 'unknown';
+  return { source, alias, boolean, string, array, unknown };
 }
 
+/**
+* check the valid argument for flagObject
+*
+* @module isVaildValue
+* @param {object} flagObject - a flag define
+* @param {string} arg - a command line argument
+* @param {Chopsticks} opts - a chopsticks instance(Chopsticks.parse options)
+* @returns {boolean} isVaild
+*/
 export function isVaildValue(flagObject, arg, opts = {}) {
   // @see github.com/substack/minimist/blob/1.2.0/test/num.js#L31
   const latter = typeof arg === 'string' ? arg : String(arg);
@@ -91,6 +148,13 @@ export function isVaildValue(flagObject, arg, opts = {}) {
   return true;
 }
 
+/**
+* @module parseArg
+* @param {string} arg - a command line argument
+* @param {string} nextArg - a next command line argument
+* @param {Chopsticks} opts - a chopsticks instance(Chopsticks.parse options)
+* @returns {object} flagObjects - the one analysis result of argument
+*/
 export function parseArg(arg, nextArg, opts = {}) {
   const type = arg.slice(0, 2) === '--' ? 'long' : 'short';
   const negative = arg.slice(0, 5) === '--no-';

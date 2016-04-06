@@ -12,18 +12,18 @@ let params;
 describe('parse(misc)', () => {
   // @see github.com/substack/minimist/blob/1.2.0/test/parse.js#L147-L157
   it('if the short flag has a "/", should be set "/" or later as a value', () => {
-    deepStrictEqual(
+    assert(deepStrictEqual(
       parse(['-I/foo/bar/baz']),
       { I: '/foo/bar/baz', flagCount: 1, _: [] }
-    );
-    deepStrictEqual(
+    ));
+    assert(deepStrictEqual(
       parse(['-xyz/foo/bar/baz']),
       { x: true, y: true, z: '/foo/bar/baz', flagCount: 3, _: [] }
-    );
-    deepStrictEqual(
+    ));
+    assert(deepStrictEqual(
       parse(['-xyz/foo/bar/baz', 'baz']),
       { x: true, y: true, z: '/foo/bar/baz', flagCount: 3, _: ['baz'] }
-    );
+    ));
   });
 
   // @see github.com/substack/minimist/tree/1.2.0/test/parse.js#L10-L14

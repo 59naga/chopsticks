@@ -36,12 +36,46 @@ Usage
 - [x] `opts.alias`
 - [x] `opts.default`
 - [x] `opts.stopEarly`
-- [x] `opts.dash` (`opts['--']`)
+- [x] `opts.dash` (aka `opts['--']`)
 - [x] `opts.unknown`
-- [ ] `opts.greedy`
-- [ ] `opts.comma`
 
 > [minimist-v1.2.0](https://github.com/substack/minimist#methods) spec completed.
+
+## new features
+- [x] `opts.unknown=true`
+  if specify is `true`, returne the detailed object at `argv.unknown`.
+
+  ```js
+  parse(['-f', 'true', '--no-foo', 'true', 'noop!', '--', 'huh']);
+  // {
+  //   "_": [
+  //     "huh"
+  //   ],
+  //   "unknown": [
+  //     {
+  //       "type": "short",
+  //       "origin": "f",
+  //       "alias": [],
+  //       "name": "f",
+  //       "value": "true"
+  //     },
+  //     {
+  //       "type": "long",
+  //       "origin": "foo",
+  //       "alias": [],
+  //       "name": "foo",
+  //       "value": false
+  //     },
+  //     "true",
+  //     "noop!"
+  //   ]
+  // }
+  ```
+  - [ ] `opts.array` - (WIP) The specified flag takes the following argument  continually. (like a [npm-run-all](https://github.com/mysticatea/npm-run-all#run-a-mix-of-sequential-and-parallel-tasks))
+    ```js
+    // $ node program.js -s cover lint report -s foo bar baz
+    parse(process.argv.slice(2),{array:'s'});
+    ```
 
 Development
 ---

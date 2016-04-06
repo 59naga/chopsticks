@@ -1,5 +1,6 @@
 // @see github.com/substack/minimist/blob/1.2.0/test/unknown.js
 import assert from 'power-assert';
+import deepStrictEqual from 'deep-strict-equal';
 import sinon from 'sinon';
 
 // target
@@ -10,6 +11,24 @@ let params;
 
 // specs
 describe('use unknown option', () => {
+  it('if specify unknown is true, it should return the unknown flag as detailed object', () => {
+    const opts = {
+      unknown: true,
+    };
+
+    params = parse(['-f', 'true', '--no-foo', 'true', 'noop!', '--', 'huh'], opts);
+    assert(params._.length === 1);
+    assert(params.unknown.length === 4);
+    assert(params.unknown[0].name === 'f');
+    assert(params.unknown[0].value === 'true');
+    assert(params.unknown[1].name === 'foo');
+    assert(params.unknown[1].value === false);
+    assert(params.unknown[2] === 'true');
+    assert(params.unknown[3] === 'noop!');
+    assert(params._[0] === 'huh');
+    assert(params.flagCount === 0);
+  });
+
   it('if specify only the unknown, should ignore all of the argument', () => {
     const opts = {
       unknown: sinon.spy(() => false),
@@ -119,7 +138,7 @@ describe('use unknown option', () => {
   });
 
   // @see github.com/substack/minimist/blob/1.2.0/test/unknown.js#L83-L102
-  it('', () => {
+  it('arguments after the "==" should not handled as unknown', () => {
     const opts = {
       '--': true,
       unknown: sinon.spy(() => false),
@@ -133,5 +152,27 @@ describe('use unknown option', () => {
     assert(params['--'].length === 2);
     assert(params['--'][0] === 'good');
     assert(params['--'][1] === 'arg');
+  });
+
+  describe('issues', () => {
+    it('#1', () => {
+      assert(deepStrictEqual(
+        parse(['-f'], {
+          string: 'b',
+          alias: {
+            f: 'b',
+          },
+          unknown() {
+            return false;
+          },
+        }),
+        {
+          f: '',
+          b: '',
+          _: [],
+          flagCount: 2,
+        },
+      ));
+    });
   });
 });

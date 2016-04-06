@@ -1,8 +1,14 @@
+// dependencies
 import _get from 'lodash.get';
 import _set from 'lodash.set';
 import * as utils from './utils';
 
+// @class Chopsticks
 export default class Chopsticks {
+  /**
+  * @constructor
+  * @param {object} [options={}] - a customize specifies
+  */
   constructor(options = {}) {
     this.aliases = {};
     Object.keys(options.alias || {}).forEach((key) => {
@@ -20,8 +26,21 @@ export default class Chopsticks {
     }
     this.strings = utils.toArray(options.string);
     this.booleans = utils.toArray(options.boolean);
+    this.arrays = utils.toArray(options.array);
 
-    this.unknownFn = typeof options.unknown === 'function' ? options.unknown : false;
+    this.unknown = options.unknown;
+    if (typeof options.unknown === 'function') {
+      this.unknownFn = options.unknown;
+    }
+    if (options.unknown === true) {
+      this.unknownFn = (arg, flag, container) => {
+        if (container.unknown === undefined) {
+          container.unknown = []; // eslint-disable-line no-param-reassign
+        }
+        container.unknown.push(flag.name ? flag : arg);
+        return false;
+      };
+    }
     this.greedyFn = options.greedy;
     this.stopEarly = options.stopEarly === true;
     this.dash = options.dash === true || options['--'] === true;
@@ -29,6 +48,12 @@ export default class Chopsticks {
     this.detail = true;
   }
 
+  /**
+  * @method normalize
+  * @param {string} flag - a confirm the definition name
+  * @param {any} value - a value to be normalized
+  * @returns {any} value - the normalized value
+  */
   normalize(flag, value) {
     if (this.booleans.indexOf(flag) > -1) {
       if (typeof value === 'boolean') {
@@ -46,6 +71,13 @@ export default class Chopsticks {
     return value;
   }
 
+  /**
+  * @method setValue
+  * @param {object} target - a object to assign a value
+  * @param {string} flag - a flag name
+  * @param {string} value - an assignment value(are normalize)
+  * @returns {undefined}
+  */
   setValue(target, flag, value) {
     const targetValue = _get(target, flag);
     const actualValue = this.normalize(flag, value);
@@ -61,6 +93,11 @@ export default class Chopsticks {
     }
   }
 
+  /**
+  * @method parse
+  * @param {string[]} args - a command line arguments
+  * @returns {object} argv - the parsed options
+  */
   parse(args) {
     if (process.env.NODE_ENV !== 'minimist' && args instanceof Array === false) {
       throw new TypeError('args is not an array');
@@ -97,14 +134,15 @@ export default class Chopsticks {
 
       const result = utils.parseArg(arg, args[i + 1], this);
       result.flags.forEach((flag) => {
-        if (this.unknownFn && utils.getAttribute(flag, this) === 'unknown') {
-          if (this.unknownFn(arg, flag) === false) {
+        const attribute = utils.getAttribute(flag, this);
+        if (this.unknownFn && attribute.unknown) {
+          if (this.unknownFn(arg, flag, container) === false) {
             return;
           }
         }
         if (flag.value !== undefined) {
           this.setValue(container.flags, flag.origin, flag.value);
-        } else if (this.strings.indexOf(flag.origin) > -1) {
+        } else if (attribute.string) {
           this.setValue(container.flags, flag.origin, '');
         } else {
           this.setValue(container.flags, flag.origin, true);
@@ -115,7 +153,7 @@ export default class Chopsticks {
       }
       if (result.flags.length === 0) {
         if (this.unknownFn) {
-          if (this.unknownFn(arg, {}) === false) {
+          if (this.unknownFn(arg, {}, container) === false) {
             continue;
           }
         }
@@ -161,13 +199,16 @@ export default class Chopsticks {
       ...container.flags,
       _: container._,
     };
-    if (process.env.NODE_ENV !== 'minimist') {
+    if (process.env.NODE_ENV === 'chopsticks') {
       params.flagCount = container.flagCount;
     }
     if (this['--']) {
       params['--'] = container.dash;
     } else if (this.dash) {
       params.dash = container.dash;
+    }
+    if (this.unknown === true) {
+      params.unknown = container.unknown;
     }
     return params;
   }
