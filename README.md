@@ -71,11 +71,22 @@ Usage
   //   ]
   // }
   ```
-  - [ ] `opts.array` - (WIP) The specified flag takes the following argument  continually. (like a [npm-run-all](https://github.com/mysticatea/npm-run-all#run-a-mix-of-sequential-and-parallel-tasks))
-    ```js
-    // $ node program.js -s cover lint report -s foo bar baz
-    parse(process.argv.slice(2),{array:'s'});
-    ```
+
+- [ ] `opts.array` - (WIP) The specified flag takes the following argument continually. (like a [npm-run-all](https://github.com/mysticatea/npm-run-all#run-a-mix-of-sequential-and-parallel-tasks))
+
+  ```js
+  // $ node program.js -s cover lint report -s foo bar baz -- huh
+  parse(process.argv.slice(2),{array:'s'});
+  // {
+  //   "_": [
+  //     "huh"
+  //   ],
+  //   "s": [
+  //     ['cover', 'lint', 'report'],
+  //     ['foo', 'bar', 'baz']
+  //   ]
+  // }
+  ```
 
 Development
 ---
