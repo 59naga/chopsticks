@@ -40,9 +40,7 @@ Usage
 > [minimist-v1.2.0](https://github.com/substack/minimist#methods) spec completed.
 
 ## New features
-- [x] Emoji support :+1:
-
-  can use emoji to short flags
+- [x] Emoji support :+1: - can use emoji to short flags.
   ```bash
   node -e 'console.log(require("minimist")(["-🍣👹👺"]))'
   # { _: [], '�': '�👹👺' }
@@ -51,8 +49,7 @@ Usage
   # { '🍣': true, '👹': true, '👺': true, _: [] }
   ```
 
-- [x] `opts.unknown=true`
-  if specify is `true`, returne the detailed object at `argv.unknown`.
+- [x] `opts.unknown=true` - if specify is `true`, returne the detailed object at `argv.unknown`.
 
   ```js
   parse(['-f', 'true', '--no-foo', 'true', 'noop!', '--', 'huh']);
