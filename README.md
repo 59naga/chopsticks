@@ -8,6 +8,9 @@ Chopsticks
   <a href="https://travis-ci.org/59naga/chopsticks">
     <img src="http://img.shields.io/travis/59naga/chopsticks.svg?style=flat-square">
   </a>
+  <a href="https://ci.appveyor.com/project/59naga/chopsticks">
+    <img src="https://img.shields.io/appveyor/ci/59naga/chopsticks.svg?style=flat-square">
+  </a>
   <a href="https://codeclimate.com/github/59naga/chopsticks/coverage">
     <img src="https://img.shields.io/codeclimate/github/59naga/chopsticks.svg?style=flat-square">
   </a>
@@ -98,7 +101,7 @@ Usage
 
   ```js
   // $ node program.js cover, lint, report. 'foo bar', baz. huh -- huh
-  parse(process.argv.slice(2),{array:'s'});
+  parse(process.argv.slice(2),{sentence:true});
   // {
   //   "_": [
   //     "huh",
