@@ -52,10 +52,10 @@ Usage
   # { '🍣': true, '👹': true, '👺': true, _: [] }
   ```
 
-- [x] `opts.unknown=true` - if specify is `true`, returne the detailed object at `argv.unknown`.
+- [x] `opts.unknown=true` - return the detailed object at `argv.unknown`.
 
   ```js
-  parse(['-f', 'true', '--no-foo', 'true', 'noop!', '--', 'huh']);
+  parse(['-f', 'true', '--no-foo', 'true', 'noop!', '--', 'huh'], { unknown: true });
   // {
   //   "_": [
   //     "huh"
@@ -85,7 +85,7 @@ Usage
 
   ```js
   // $ node program.js -s cover lint report -s foo bar baz -- huh
-  parse(process.argv.slice(2),{array:'s'});
+  parse(process.argv.slice(2), { array: 's' });
   // {
   //   "_": [
   //     "huh"
@@ -101,7 +101,7 @@ Usage
 
   ```js
   // $ node program.js cover, lint, report. 'foo bar', baz. huh -- huh
-  parse(process.argv.slice(2),{sentence:true});
+  parse(process.argv.slice(2), { sentence: true });
   // {
   //   "_": [
   //     "huh",
