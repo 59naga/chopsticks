@@ -1,6 +1,5 @@
 // @see github.com/substack/minimist/blob/1.2.0/test/parse.js#L159-L178
 import assert from 'power-assert';
-import deepStrictEqual from 'deep-strict-equal';
 
 // target
 import parse from '../../src';
@@ -24,7 +23,7 @@ describe('use array option', () => {
   });
 
   it('if specify array, continuously should take the argument', () => {
-    assert(deepStrictEqual(
+    assert.deepStrictEqual(
       parse(
         '--array foo bar baz --array beep boop kaboom -- huh'.split(' '),
         {
@@ -39,11 +38,11 @@ describe('use array option', () => {
         ],
         _: ['huh'],
       }
-    ));
+    );
   });
 
   it('if specify array and boolean, should be normalized', () => {
-    assert(deepStrictEqual(
+    assert.deepStrictEqual(
       parse(
         '--array foo bar baz --array true false true -- huh'.split(' '),
         {
@@ -63,11 +62,11 @@ describe('use array option', () => {
           'huh',
         ],
       }
-    ));
+    );
   });
 
   it('if specify array and string, should be normalized', () => {
-    assert(deepStrictEqual(
+    assert.deepStrictEqual(
       parse(
         '--strs 0xdeadbeef 1234 5.6 1e7 --nums 0xdeadbeef 1234 5.6 1e7 -- huh'.split(' '),
         {
@@ -87,11 +86,11 @@ describe('use array option', () => {
           'huh',
         ],
       }
-    ));
+    );
   });
 
   it('if specify array via alias, continuously should take the argument', () => {
-    assert(deepStrictEqual(
+    assert.deepStrictEqual(
       parse(
         '--👺 foo bar baz -👺 beep boop kaboom -- huh'.split(' '),
         {
@@ -113,6 +112,6 @@ describe('use array option', () => {
         ],
         _: ['huh'],
       },
-    ));
+    );
   });
 });

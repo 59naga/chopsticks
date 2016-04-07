@@ -1,5 +1,6 @@
 test
 --recursive
+--require assert-polyfill
 --compilers js:babel-register
 --bail
 --reporter dot

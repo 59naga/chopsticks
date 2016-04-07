@@ -1,6 +1,5 @@
 // dependencies
 import assert from 'power-assert';
-import deepStrictEqual from 'deep-strict-equal';
 import sinon from 'sinon';
 
 // target
@@ -85,13 +84,13 @@ describe('use many options(high complexity)', () => {
       bar: true,
     };
 
-    assert(deepStrictEqual(parse(aliased, opts), expected));
-    assert(deepStrictEqual(parse(regular, opts), expected));
-    assert(deepStrictEqual(parse(alt, opts), expected));
+    assert.deepStrictEqual(parse(aliased, opts), expected);
+    assert.deepStrictEqual(parse(regular, opts), expected);
+    assert.deepStrictEqual(parse(alt, opts), expected);
   });
 
   it('', () => {
-    assert(deepStrictEqual(
+    assert.deepStrictEqual(
       parse(['-h', 'derp'], {
         boolean: 'herp',
         alias: { h: 'herp' },
@@ -101,7 +100,7 @@ describe('use many options(high complexity)', () => {
         flagCount: 2,
         _: ['derp'],
       },
-    ));
+    );
   });
 
   // @see github.com/substack/minimist/blob/1.2.0/test/bool.js#L144-L166

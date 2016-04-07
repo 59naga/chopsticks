@@ -1,6 +1,5 @@
 // @see github.com/substack/minimist/blob/1.2.0/test/unknown.js
 import assert from 'power-assert';
-import deepStrictEqual from 'deep-strict-equal';
 import { parse as shellParse } from 'shell-quote';
 import sinon from 'sinon';
 
@@ -203,7 +202,7 @@ describe('use unknown option', () => {
 
   describe('issues', () => {
     it('#1', () => {
-      assert(deepStrictEqual(
+      assert.deepStrictEqual(
         parse(['-f'], {
           string: 'b',
           alias: {
@@ -219,7 +218,7 @@ describe('use unknown option', () => {
           _: [],
           flagCount: 2,
         },
-      ));
+      );
     });
   });
 });
