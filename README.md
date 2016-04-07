@@ -114,37 +114,37 @@ Usage
   // }
   ```
 
-  Stacktrace was broken
-  ---
-  ```bash
-  node
-  > require('chopsticks')('error')
-  # TypeError: args is not an array
-  # at n.u.createClass.value (/path/to/chopsticks/lib/index.js:1:59798)
-  ```
-  published code is compressed and the source map is provided.
-  sourcemap isn't supported on NodeJS(current v5.10.0). but this resolved in the [node-source-map-support](https://github.com/evanw/node-source-map-support#readme).
+Stacktrace was broken
+---
+```bash
+node
+> require('chopsticks')('error')
+# TypeError: args is not an array
+# at n.u.createClass.value (/path/to/chopsticks/lib/index.js:1:59798)
+```
+published code is compressed and the source map is provided.
+sourcemap isn't supported on NodeJS(current v5.10.0). but this resolved in the [node-source-map-support](https://github.com/evanw/node-source-map-support#readme).
 
-  ```bash
-  npm install source-map-support --save-dev
-  ```
-  ```js
-  import 'source-map-support/register';
-  ```
-  or...
-  ```bash
-  $ mocha --require source-map-support/register
-  ```
+```bash
+npm install source-map-support --save-dev
+```
+```js
+import 'source-map-support/register';
+```
+or...
+```bash
+$ mocha --require source-map-support/register
+```
 
-  you can check the original line number.
+you can check the original line number.
 
-  ```bash
-  $ node
-  require('source-map-support/register');
-  require('chopsticks')('error');
-  # TypeError: args is not an array
-  #    at n.u.createClass.value (/Users/59naga/Downloads/chopsticks/src/Chopsticks.js:58:13)
-  ```
+```bash
+$ node
+require('source-map-support/register');
+require('chopsticks')('error');
+# TypeError: args is not an array
+#    at n.u.createClass.value (/Users/59naga/Downloads/chopsticks/src/Chopsticks.js:58:13)
+```
 
 Development
 ---
