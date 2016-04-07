@@ -41,7 +41,17 @@ Usage
 
 > [minimist-v1.2.0](https://github.com/substack/minimist#methods) spec completed.
 
-## new features
+## New features
+- [x] emoji support
+  can use emoji to short flags :+1:
+  ```bash
+  node -e 'console.log(require("minimist")(["-🍣👹👺"]))'
+  # { _: [], '�': '�👹👺' }
+
+  node -e 'console.log(require("chopsticks")(["-🍣👹👺"]))'
+  # { '🍣': true, '👹': true, '👺': true, _: [] }
+  ```
+
 - [x] `opts.unknown=true`
   if specify is `true`, returne the detailed object at `argv.unknown`.
 
@@ -72,7 +82,7 @@ Usage
   // }
   ```
 
-- [ ] `opts.array` - (WIP) The specified flag takes the following argument continually. (like a [npm-run-all](https://github.com/mysticatea/npm-run-all#run-a-mix-of-sequential-and-parallel-tasks))
+- [x] `opts.array` - the specified flag takes the following argument continually. (like a [npm-run-all](https://github.com/mysticatea/npm-run-all#run-a-mix-of-sequential-and-parallel-tasks))
 
   ```js
   // $ node program.js -s cover lint report -s foo bar baz -- huh
@@ -84,6 +94,23 @@ Usage
   //   "s": [
   //     ['cover', 'lint', 'report'],
   //     ['foo', 'bar', 'baz']
+  //   ]
+  // }
+  ```
+
+- [ ] `opts.sentence` - (WIP) if `true`, comma nearby argument, is defined in "sentence". and ignore the last period of the argument. (like a [abigail](https://github.com/abigailjs/abigail#usage))
+
+  ```js
+  // $ node program.js cover, lint, report. 'foo bar', baz. huh -- huh
+  parse(process.argv.slice(2),{array:'s'});
+  // {
+  //   "_": [
+  //     "huh",
+  //     "huh"
+  //   ],
+  //   "sentence": [
+  //     ['cover', 'lint', 'report'],
+  //     ['foo bar', 'baz']
   //   ]
   // }
   ```

@@ -120,6 +120,27 @@ describe('use unknown option', () => {
     assert(params.f === '');
   });
 
+  it('when the array has been defined, it should be known', () => {
+    const opts = {
+      array: 'f',
+      unknown: sinon.spy(() => false),
+    };
+
+    params = parse(['-f', '-b=true', '--bar', 'true'], opts);
+    assert(opts.unknown.callCount === 2);
+    assert(opts.unknown.args[0][0] === '-b=true');
+    assert(opts.unknown.args[0][1].name === 'b');
+    assert(opts.unknown.args[0][1].value === 'true');
+    assert(opts.unknown.args[1][0] === '--bar');
+    assert(opts.unknown.args[1][1].name === 'bar');
+    assert(opts.unknown.args[1][1].value === 'true');
+
+    assert(params._.length === 0);
+    assert(params.flagCount === 1);
+    assert(params.f.length === 0);
+    assert(params.f instanceof Array);
+  });
+
   // @see https://github.com/substack/minimist/blob/1.2.0/test/unknown.js#L24-L40
   it('if boolean is true, pure long flag should be handle as a known only', () => {
     const opts = {

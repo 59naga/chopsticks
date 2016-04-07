@@ -49,51 +49,6 @@ export default class Chopsticks {
   }
 
   /**
-  * @method normalize
-  * @param {string} flag - a confirm the definition name
-  * @param {any} value - a value to be normalized
-  * @returns {any} value - the normalized value
-  */
-  normalize(flag, value) {
-    if (this.booleans.indexOf(flag) > -1) {
-      if (typeof value === 'boolean') {
-        return value;
-      }
-      return value === 'true';
-    }
-    if (this.strings.indexOf(flag) > -1) {
-      return value;
-    }
-    if (utils.isNumber(value)) {
-      return Number(value);
-    }
-
-    return value;
-  }
-
-  /**
-  * @method setValue
-  * @param {object} target - a object to assign a value
-  * @param {string} flag - a flag name
-  * @param {string} value - an assignment value(are normalize)
-  * @returns {undefined}
-  */
-  setValue(target, flag, value) {
-    const targetValue = _get(target, flag);
-    const actualValue = this.normalize(flag, value);
-    if (
-      targetValue === undefined
-      || typeof targetValue === 'boolean'
-    ) {
-      _set(target, flag, actualValue);
-    } else if (Array.isArray(targetValue)) {
-      targetValue.push(actualValue);
-    } else {
-      _set(target, flag, [targetValue, actualValue]);
-    }
-  }
-
-  /**
   * @method parse
   * @param {string[]} args - a command line arguments
   * @returns {object} argv - the parsed options
@@ -103,14 +58,7 @@ export default class Chopsticks {
       throw new TypeError('args is not an array');
     }
 
-    const container = {
-      _: [],
-      flags: {},
-      get flagCount() {
-        return Object.keys(this.flags).length;
-      },
-      dash: [],
-    };
+    const container = this.initialize();
 
     let noParse = false;
     for (let i = 0; i < args.length; i++) {
@@ -140,8 +88,22 @@ export default class Chopsticks {
             return;
           }
         }
-        if (flag.value !== undefined) {
-          this.setValue(container.flags, flag.origin, flag.value);
+        if (attribute.array) {
+          const j = _get(container.flags, flag.origin, []).length;
+          let k = 0;
+          for (; i < args.length; i++) {
+            const value = args[i + 1];
+            const path = `${flag.origin}[${j}][${k}]`;
+            if (value !== undefined && utils.isValidValue(flag, value, this)) {
+              this.setValue(container.flags, path, value, attribute);
+              k++;
+            } else {
+              break;
+            }
+          }
+          result.validNext = false;
+        } else if (flag.value !== undefined) {
+          this.setValue(container.flags, flag.origin, flag.value, attribute);
         } else if (attribute.string) {
           this.setValue(container.flags, flag.origin, '');
         } else {
@@ -163,10 +125,86 @@ export default class Chopsticks {
       }
     }
 
+    return this.finalize(container);
+  }
+
+  /**
+  * @method normalize
+  * @param {string} flag - a confirm the definition name
+  * @param {any} value - a value to be normalized
+  * @param {object} attribute - a flag attribute
+  * @returns {any} value - the normalized value
+  */
+  normalize(flag, value, attribute = {}) {
+    if (attribute.boolean) {
+      return value === 'true';
+    }
+    if (attribute.string) {
+      return value;
+    }
+    if (utils.isNumber(value)) {
+      return Number(value);
+    }
+
+    return value;
+  }
+
+  /**
+  * @method setValue
+  * @param {object} target - a object to assign a value
+  * @param {string} flag - a flag name
+  * @param {string} value - an assignment value(are normalize)
+  * @param {object} attribute - a flag attribute
+  * @returns {undefined}
+  */
+  setValue(target, flag, value, attribute = {}) {
+    const targetValue = _get(target, flag);
+    const actualValue = this.normalize(flag, value, attribute);
+    if (
+      targetValue === undefined
+      || typeof targetValue === 'boolean'
+    ) {
+      _set(target, flag, actualValue);
+    } else if (Array.isArray(targetValue)) {
+      targetValue.push(actualValue);
+    } else {
+      _set(target, flag, [targetValue, actualValue]);
+    }
+  }
+
+  /**
+  * generate container object for parse
+  *
+  * @returns {object} container
+  */
+  initialize() {
+    return {
+      _: [],
+      flags: {},
+      get flagCount() {
+        return Object.keys(this.flags).length;
+      },
+      dash: [],
+    };
+  }
+
+  /*
+  * a final processing of the parse container
+  *
+  * @param {object} container - a initialized container object
+  * @returns {object} argv - the parsed object like a minimist
+  */
+  finalize(container = {}) {
     Object.keys(this.defaults).forEach((flag) => {
       const value = _get(container.flags, flag);
       if (value === undefined) {
         _set(container.flags, flag, this.defaults[flag]);
+      }
+    });
+
+    this.arrays.forEach((flag) => {
+      if (_get(container.flags, flag) === undefined) {
+        _set(container.flags, flag, []);
       }
     });
 
