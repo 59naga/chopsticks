@@ -1,4 +1,4 @@
-import npm from 'rollup-plugin-npm';
+import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
@@ -10,7 +10,7 @@ export default {
   format: 'umd',
   moduleName: 'chopsticks',
   plugins: [
-    npm({ jsnext: true }),
+    nodeResolve({ jsnext: true }),
     commonjs(),
     babel(),
     uglify(),
