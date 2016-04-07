@@ -43,7 +43,7 @@ describe('use array option', () => {
   });
 
   it('if specify array and boolean, should be normalized', () => {
-    assert.deepStrictEqual(
+    assert(deepStrictEqual(
       parse(
         '--array foo bar baz --array true false true -- huh'.split(' '),
         {
@@ -63,7 +63,7 @@ describe('use array option', () => {
           'huh',
         ],
       }
-    );
+    ));
   });
 
   it('if specify array and string, should be normalized', () => {
