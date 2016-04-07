@@ -1,5 +1,5 @@
-<a name="0.1.0"></a>
-# [0.1.0](https://github.com/59naga/chopsticks/compare/v0.0.2...v0.1.0) (2016-04-07)
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/59naga/chopsticks/compare/v0.0.2...v0.2.0) (2016-04-07)
 
 
 ### Bug Fixes
@@ -9,6 +9,7 @@
 ### Features
 
 * **array:** add array option ([a73dd2b](https://github.com/59naga/chopsticks/commit/a73dd2b))
+* **sentence:** add `sentence` option ([4d3790b](https://github.com/59naga/chopsticks/commit/4d3790b))
 
 
 
