@@ -19,8 +19,6 @@ Chopsticks
   </a>
 </p>
 
-> WIP
-
 Installation
 ---
 ```bash
@@ -42,8 +40,9 @@ Usage
 > [minimist-v1.2.0](https://github.com/substack/minimist#methods) spec completed.
 
 ## New features
-- [x] emoji support
-  can use emoji to short flags :+1:
+- [x] Emoji support :+1:
+
+  can use emoji to short flags
   ```bash
   node -e 'console.log(require("minimist")(["-🍣👹👺"]))'
   # { _: [], '�': '�👹👺' }
@@ -98,7 +97,7 @@ Usage
   // }
   ```
 
-- [ ] `opts.sentence` - (WIP) if `true`, comma nearby argument, is defined in "sentence". and ignore the last period of the argument. (like a [abigail](https://github.com/abigailjs/abigail#usage))
+- [ ] `opts.sentence` - (**WIP**) if `true`, comma nearby argument, is defined in "sentence". and ignore the last period of the argument. (like a [abigail](https://github.com/abigailjs/abigail#usage))
 
   ```js
   // $ node program.js cover, lint, report. 'foo bar', baz. huh -- huh
