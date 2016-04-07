@@ -365,7 +365,7 @@ describe('Chopsticks::parseArg', () => {
 
     // @see https://github.com/substack/minimist/blob/1.2.0/test/bool.js#L39
     describe('use aliases option', () => {
-      it('', () => {
+      it('if specify booleans via aliases, should be handle as bolean', () => {
         const options = {
           aliases: { h: 'herp' },
           booleans: ['herp'],

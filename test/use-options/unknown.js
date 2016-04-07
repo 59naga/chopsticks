@@ -1,6 +1,7 @@
 // @see github.com/substack/minimist/blob/1.2.0/test/unknown.js
 import assert from 'power-assert';
 import deepStrictEqual from 'deep-strict-equal';
+import { parse as shellParse } from 'shell-quote';
 import sinon from 'sinon';
 
 // target
@@ -139,6 +140,31 @@ describe('use unknown option', () => {
     assert(params.flagCount === 1);
     assert(params.f.length === 0);
     assert(params.f instanceof Array);
+  });
+
+  it('if sentence is true, it should be sentence is known', () => {
+    const opts = {
+      sentence: true,
+      unknown: sinon.spy(() => false),
+    };
+
+    params = parse(shellParse("cover, lint, report. 'foo bar', baz. huh -- huh"), opts);
+    assert(opts.unknown.callCount === 1);
+    assert(opts.unknown.args[0][0] === 'huh');
+    assert(opts.unknown.args[0][1].name === undefined);
+    assert(opts.unknown.args[0][1].value === undefined);
+
+    assert(params._.length === 1);
+    assert(params.flagCount === 0);
+    assert(params.sentence.length === 2);
+    assert(params.sentence[0].length === 3);
+    assert(params.sentence[0][0] === 'cover');
+    assert(params.sentence[0][1] === 'lint');
+    assert(params.sentence[0][2] === 'report');
+    assert(params.sentence[1].length === 2);
+    assert(params.sentence[1][0] === 'foo bar');
+    assert(params.sentence[1][1] === 'baz');
+    assert(params._[0] === 'huh');
   });
 
   // @see https://github.com/substack/minimist/blob/1.2.0/test/unknown.js#L24-L40

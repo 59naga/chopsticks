@@ -141,6 +141,9 @@ export function isValidValue(flagObject, arg, opts = {}) {
   if (latter === '-') {
     return true;
   }
+  if (opts.sentence === true && latter.slice(-1) === ',') {
+    return false;
+  }
   if (latter.slice(0, 1) === '-') {
     return false;
   }

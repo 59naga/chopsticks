@@ -34,18 +34,14 @@ export default class Chopsticks {
     }
     if (options.unknown === true) {
       this.unknownFn = (arg, flag, container) => {
-        if (container.unknown === undefined) {
-          container.unknown = []; // eslint-disable-line no-param-reassign
-        }
         container.unknown.push(flag.name ? flag : arg);
         return false;
       };
     }
-    this.greedyFn = options.greedy;
     this.stopEarly = options.stopEarly === true;
     this.dash = options.dash === true || options['--'] === true;
     this['--'] = options['--'] === true;
-    this.detail = true;
+    this.sentence = options.sentence === true;
   }
 
   /**
@@ -61,6 +57,7 @@ export default class Chopsticks {
     const container = this.initialize();
 
     let noParse = false;
+    let inSentence = false;
     for (let i = 0; i < args.length; i++) {
       const arg = typeof args[i] === 'string' ? args[i] : String(args[i]);
       if (arg.length === 0) {
@@ -112,6 +109,20 @@ export default class Chopsticks {
       });
       if (result.validNext) {
         i++;
+      }
+      if (result.flags.length === 0 && this.sentence) {
+        if (inSentence) {
+          const words = arg.replace(/[,.]$/, '');
+          container.sentence[container.sentence.length - 1].push(words);
+          if (arg.slice(-1) !== ',') {
+            inSentence = false;
+          }
+          continue;
+        } else if (arg.slice(-1) === ',') {
+          inSentence = true;
+          container.sentence.push([arg.slice(0, -1)]);
+          continue;
+        }
       }
       if (result.flags.length === 0) {
         if (this.unknownFn) {
@@ -185,6 +196,8 @@ export default class Chopsticks {
         return Object.keys(this.flags).length;
       },
       dash: [],
+      unknown: [],
+      sentence: [],
     };
   }
 
@@ -244,6 +257,9 @@ export default class Chopsticks {
       params['--'] = container.dash;
     } else if (this.dash) {
       params.dash = container.dash;
+    }
+    if (this.sentence === true) {
+      params.sentence = container.sentence;
     }
     if (this.unknown === true) {
       params.unknown = container.unknown;

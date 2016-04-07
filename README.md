@@ -97,7 +97,7 @@ Usage
   // }
   ```
 
-- [ ] `opts.sentence` - (**WIP**) if `true`, comma nearby argument, is defined in "sentence". and ignore the last period of the argument. (like a [abigail](https://github.com/abigailjs/abigail#usage))
+- [x] `opts.sentence` - if `true`, comma nearby argument, is defined in "sentence". and ignore the last period of the argument. (like a [abigail](https://github.com/abigailjs/abigail#usage))
 
   ```js
   // $ node program.js cover, lint, report. 'foo bar', baz. huh -- huh
