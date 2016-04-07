@@ -16,4 +16,7 @@ install:
 test_script:
   - node --version
   - npm --version
-  - npm run test
+  - npm run build
+  - npm run tap
+  - npm run mocha
+  - npm run lint
