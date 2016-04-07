@@ -1,6 +1,6 @@
 {
   "name": "chopsticks",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "more greedy argument parser like a minimist!",
   "main": "lib",
   "files": [
