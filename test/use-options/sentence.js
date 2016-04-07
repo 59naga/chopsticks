@@ -49,7 +49,7 @@ describe('use sentence option', () => {
         _: [
           'huh',
           'huh',
-        ]
+        ],
       },
     ));
   });
