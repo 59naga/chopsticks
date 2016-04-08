@@ -1,3 +1,13 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/59naga/chopsticks/compare/v0.3.0...v0.4.0) (2016-04-08)
+
+
+### Features
+
+* add `Relative Filename Flag` ([bc52d45](https://github.com/59naga/chopsticks/commit/bc52d45))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/59naga/chopsticks/compare/v0.2.0...v0.3.0) (2016-04-08)
 
