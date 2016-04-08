@@ -103,6 +103,18 @@ Usage
   // }
   ```
 
+- [x] Relative Filename Flag - if the flag name begins with a dot(e.g. `--./path/to/file`), it handled as a flag name.
+
+  ```js
+  // $ node program.js --use-popular-plugin --./my-extra-plugin.js customValue
+  parse(process.argv.slice(2));
+  // {
+  //   'use-popular-plugin': true,
+  //   './my-extra-plugin.js': 'customValue',
+  //   _: []
+  // }
+  ```
+
 Stacktrace was broken
 ---
 ```bash

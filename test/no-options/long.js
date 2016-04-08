@@ -84,4 +84,21 @@ describe('parse(long)', () => {
     assert(params.foo.quux.o_O === true);
     assert(params.beep.boop === true);
   });
+
+  // --./path/to/file -> {'./path/to/file': true}
+  it('if the flag name begins with a dot, it should be handled as a flag name', () => {
+    params = parse([
+      '--./path/to/one.js', 'value',
+      '--./path/to/tow', 'bar',
+      '--i/path/to/url',
+      '--.travis.yml',
+    ]);
+
+    assert(params._.length === 0);
+    assert(params.flagCount === 4);
+    assert(params['./path/to/one.js'] === 'value');
+    assert(params['./path/to/tow'] === 'bar');
+    assert(params['i/path/to/url'] === true);
+    assert(params['.travis.yml'] === true);
+  });
 });

@@ -153,7 +153,7 @@ export default class Chopsticks {
   * @param {object} attribute - a flag attribute
   * @returns {any} value - the normalized value
   */
-  normalize(flag, value, attribute = {}) {
+  normalize(value, attribute = {}) {
     if (attribute.boolean) {
       return value === 'true';
     }
@@ -176,17 +176,18 @@ export default class Chopsticks {
   * @returns {undefined}
   */
   setValue(target, flag, value, attribute = {}) {
-    const targetValue = _get(target, flag);
-    const actualValue = this.normalize(flag, value, attribute);
+    const location = flag[0] === '.' ? [flag] : flag;
+    const targetValue = _get(target, location);
+    const actualValue = this.normalize(value, attribute);
     if (
       targetValue === undefined
       || typeof targetValue === 'boolean'
     ) {
-      _set(target, flag, actualValue);
+      _set(target, location, actualValue);
     } else if (Array.isArray(targetValue)) {
       targetValue.push(actualValue);
     } else {
-      _set(target, flag, [targetValue, actualValue]);
+      _set(target, location, [targetValue, actualValue]);
     }
   }
 
