@@ -1,3 +1,4 @@
+// self dependencies
 import Chopsticks from './Chopsticks';
 
 /*

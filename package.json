@@ -16,7 +16,7 @@
     "cover": "abby cover:*",
     "cover:test": "nyc --reporter=lcov --reporter=text cross-env NODE_ENV=chopsticks mocha",
     "cover:report": "node -e \"if(process.env.TRAVIS){}else{process.exit(1)}\" && codeclimate-test-reporter < coverage/lcov.info || echo skip coverage report",
-    "build": "cross-env NODE_ENV=production rollup -c",
+    "build": "NODE_ENV=production rollup -c && ls -lh lib",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "postversion": "git push --follow-tags && conventional-github-releaser -p angular -r 0"
   },
@@ -30,7 +30,6 @@
   "devDependencies": {
     "abigail": "^1.3.5",
     "array-from": "59naga/array-from#9cd0f1ce9a0e0adbfd21d9b7b735bc5765ba969e",
-    "assert-exception": "^1.1.0",
     "assert-polyfill": "^0.0.0",
     "babel-cli": "^6.6.5",
     "babel-eslint": "^6.0.2",
@@ -39,7 +38,6 @@
     "babel-preset-es2015-rollup": "^1.1.1",
     "babel-preset-stage-1": "^6.5.0",
     "babel-register": "^6.7.2",
-    "chokidar": "^1.4.3",
     "codeclimate-test-reporter": "^0.3.1",
     "conventional-changelog-cli": "^1.1.1",
     "conventional-github-releaser": "^1.1.1",

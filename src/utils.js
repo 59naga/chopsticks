@@ -1,3 +1,4 @@
+// dependencies
 import arrayFrom from 'array-from';
 
 /**
