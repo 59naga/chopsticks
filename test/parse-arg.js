@@ -2,6 +2,7 @@
 import assert from 'power-assert';
 
 // target
+import Flag from '../src/Flag';
 import * as utils from '../src/utils';
 
 // specs
@@ -39,9 +40,9 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-foo'),
         {
           flags: [
-            { type: 'short', origin: 'f', alias: [], name: 'f', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: undefined },
+            new Flag('short', 'f'),
+            new Flag('short', 'o'),
+            new Flag('short', 'o'),
           ],
           validNext: false,
         },
@@ -51,9 +52,9 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-foo'),
         {
           flags: [
-            { type: 'short', origin: 'f', alias: [], name: 'f', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: undefined },
+            new Flag('short', 'f'),
+            new Flag('short', 'o'),
+            new Flag('short', 'o'),
           ],
           validNext: false,
         },
@@ -62,9 +63,9 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-👺🍣🎴'),
         {
           flags: [
-            { type: 'short', origin: '👺', alias: [], name: '👺', value: undefined },
-            { type: 'short', origin: '🍣', alias: [], name: '🍣', value: undefined },
-            { type: 'short', origin: '🎴', alias: [], name: '🎴', value: undefined },
+            new Flag('short', '👺'),
+            new Flag('short', '🍣'),
+            new Flag('short', '🎴'),
           ],
           validNext: false,
         },
@@ -76,9 +77,9 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-foo', 'bar'),
         {
           flags: [
-            { type: 'short', origin: 'f', alias: [], name: 'f', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: 'bar' },
+            new Flag('short', 'f'),
+            new Flag('short', 'o'),
+            new Flag('short', 'o', 'bar'),
           ],
           validNext: true,
         },
@@ -90,7 +91,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-i=foo', 'foo'),
         {
           flags: [
-            { type: 'short', origin: 'i', alias: [], name: 'i', value: 'foo' },
+            new Flag('short', 'i', 'foo'),
           ],
           validNext: false,
         },
@@ -110,9 +111,9 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-foo=foo', 'foo'),
         {
           flags: [
-            { type: 'short', origin: 'f', alias: [], name: 'f', value: 'foo' },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: 'foo' },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: 'foo' },
+            new Flag('short', 'f', 'foo'),
+            new Flag('short', 'o', 'foo'),
+            new Flag('short', 'o', 'foo'),
           ],
           validNext: false,
         },
@@ -125,7 +126,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-n123', 'foo'),
         {
           flags: [
-            { type: 'short', origin: 'n', alias: [], name: 'n', value: '123' },
+            new Flag('short', 'n', '123'),
           ],
           validNext: false,
         },
@@ -138,9 +139,9 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-foo0xdeadbeef', 'foo'),
         {
           flags: [
-            { type: 'short', origin: 'f', alias: [], name: 'f', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: '0xdeadbeef' },
+            new Flag('short', 'f'),
+            new Flag('short', 'o'),
+            new Flag('short', 'o', '0xdeadbeef'),
           ],
           validNext: false,
         },
@@ -150,10 +151,10 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-0123', 'foo'),
         {
           flags: [
-            { type: 'short', origin: '0', alias: [], name: '0', value: undefined },
-            { type: 'short', origin: '1', alias: [], name: '1', value: undefined },
-            { type: 'short', origin: '2', alias: [], name: '2', value: undefined },
-            { type: 'short', origin: '3', alias: [], name: '3', value: 'foo' },
+            new Flag('short', '0'),
+            new Flag('short', '1'),
+            new Flag('short', '2'),
+            new Flag('short', '3', 'foo'),
           ],
           validNext: true,
         },
@@ -165,7 +166,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-i/foo/bar/', 'foo'),
         {
           flags: [
-            { type: 'short', origin: 'i', alias: [], name: 'i', value: '/foo/bar/' },
+            new Flag('short', 'i', '/foo/bar/'),
           ],
           validNext: false,
         },
@@ -175,11 +176,11 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-/foo/', 'foo'),
         {
           flags: [
-            { type: 'short', origin: '/', alias: [], name: '/', value: undefined },
-            { type: 'short', origin: 'f', alias: [], name: 'f', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: undefined },
-            { type: 'short', origin: 'o', alias: [], name: 'o', value: undefined },
-            { type: 'short', origin: '/', alias: [], name: '/', value: 'foo' },
+            new Flag('short', '/'),
+            new Flag('short', 'f'),
+            new Flag('short', 'o'),
+            new Flag('short', 'o'),
+            new Flag('short', '/', 'foo'),
           ],
           validNext: true,
         },
@@ -193,7 +194,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('--f'),
         {
           flags: [
-            { type: 'long', origin: 'f', alias: [], name: 'f', value: undefined },
+            new Flag('long', 'f'),
           ],
           validNext: false,
         },
@@ -203,7 +204,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('--foo'),
         {
           flags: [
-            { type: 'long', origin: 'foo', alias: [], name: 'foo', value: undefined },
+            new Flag('long', 'foo'),
           ],
           validNext: false,
         },
@@ -215,7 +216,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('--foo', 'bar'),
         {
           flags: [
-            { type: 'long', origin: 'foo', alias: [], name: 'foo', value: 'bar' },
+            new Flag('long', 'foo', 'bar'),
           ],
           validNext: true,
         },
@@ -225,7 +226,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('--foo', '-bar'),
         {
           flags: [
-            { type: 'long', origin: 'foo', alias: [], name: 'foo', value: undefined },
+            new Flag('long', 'foo'),
           ],
           validNext: false,
         },
@@ -235,7 +236,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('--foo', 1234),
         {
           flags: [
-            { type: 'long', origin: 'foo', alias: [], name: 'foo', value: 1234 },
+            new Flag('long', 'foo', 1234),
           ],
           validNext: true,
         },
@@ -247,7 +248,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('--no-foo'),
         {
           flags: [
-            { type: 'long', origin: 'foo', alias: [], name: 'foo', value: false },
+            new Flag('long', 'foo', false),
           ],
           validNext: false,
         },
@@ -262,7 +263,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('--no-foo=false'),
         {
           flags: [
-            { type: 'long', origin: 'no-foo', alias: [], name: 'no-foo', value: 'false' },
+            new Flag('long', 'no-foo', 'false'),
           ],
           validNext: false,
         },
@@ -271,12 +272,13 @@ describe('Chopsticks::parseArg', () => {
   });
 
   describe('dash', () => {
-    it('', () => {
+    // @see https://github.com/substack/minimist/blob/1.2.0/test/dash.js#L6
+    it('"-" after the short flag, it should be handled as a value', () => {
       assert.deepStrictEqual(
         utils.parseArg('-n', '-'),
         {
           flags: [
-            { type: 'short', origin: 'n', alias: [], name: 'n', value: '-' },
+            new Flag('short', 'n', '-'),
           ],
           validNext: true,
         },
@@ -292,7 +294,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-f-'),
         {
           flags: [
-            { type: 'short', origin: 'f', alias: [], name: 'f', value: '-' },
+            new Flag('short', 'f', '-'),
           ],
           validNext: false,
         },
@@ -301,7 +303,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-b', '-', { booleans: ['b'] }),
         {
           flags: [
-            { type: 'short', origin: 'b', alias: [], name: 'b', value: undefined },
+            new Flag('short', 'b'),
           ],
           validNext: false,
         },
@@ -310,7 +312,7 @@ describe('Chopsticks::parseArg', () => {
         utils.parseArg('-s', '-', { strings: ['s'] }),
         {
           flags: [
-            { type: 'short', origin: 's', alias: [], name: 's', value: '-' },
+            new Flag('short', 's', '-'),
           ],
           validNext: true,
         },
@@ -328,7 +330,7 @@ describe('Chopsticks::parseArg', () => {
           utils.parseArg('-z', 'one', options),
           {
             flags: [
-              { type: 'short', origin: 'z', alias: [], name: 'z', value: undefined },
+              new Flag('short', 'z'),
             ],
             validNext: false,
           },
@@ -338,7 +340,7 @@ describe('Chopsticks::parseArg', () => {
           utils.parseArg('-z', 'true', options),
           {
             flags: [
-              { type: 'short', origin: 'z', alias: [], name: 'z', value: 'true' },
+              new Flag('short', 'z', 'true'),
             ],
             validNext: true,
           },
@@ -354,7 +356,7 @@ describe('Chopsticks::parseArg', () => {
           utils.parseArg('--z', 'one', options),
           {
             flags: [
-              { type: 'long', origin: 'z', alias: [], name: 'z', value: undefined },
+              new Flag('long', 'z'),
             ],
             validNext: false,
           },
@@ -373,7 +375,7 @@ describe('Chopsticks::parseArg', () => {
           utils.parseArg('-h', 'derp', options),
           {
             flags: [
-              { type: 'short', origin: 'h', alias: ['herp'], name: 'h', value: undefined },
+              new Flag('short', 'h'),
             ],
             validNext: false,
           },

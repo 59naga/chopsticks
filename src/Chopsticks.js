@@ -79,7 +79,7 @@ export default class Chopsticks {
 
       const result = utils.parseArg(arg, args[i + 1], this);
       result.flags.forEach((flag) => {
-        const attribute = utils.getAttribute(flag, this);
+        const attribute = flag.getAttribute();
         if (this.unknownFn && attribute.unknown) {
           if (this.unknownFn(arg, flag, container) === false) {
             return;
@@ -91,7 +91,7 @@ export default class Chopsticks {
           for (; i < args.length; i++) {
             const value = args[i + 1];
             const path = `${flag.origin}[${j}][${k}]`;
-            if (value !== undefined && utils.isValidValue(flag, value, this)) {
+            if (flag.isValidValue(value, this)) {
               this.setValue(container.flags, path, value, attribute);
               k++;
             } else {
