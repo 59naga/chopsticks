@@ -1,5 +1,5 @@
 // dependencies
-import arrayFrom from 'array-from';
+import arrayFrom from '@59naga/array.from';
 
 // self dependencies
 import Flag from './Flag';

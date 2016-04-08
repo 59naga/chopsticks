@@ -42,6 +42,7 @@ export default class Chopsticks {
     this.dash = options.dash === true || options['--'] === true;
     this['--'] = options['--'] === true;
     this.sentence = options.sentence === true;
+    this.nest = options.nest === true;
   }
 
   /**
@@ -55,11 +56,12 @@ export default class Chopsticks {
     }
 
     const container = this.initialize();
+    const resolvedArgs = this.nest ? this.resolveNest(args) : args;
 
     let noParse = false;
     let inSentence = false;
-    for (let i = 0; i < args.length; i++) {
-      const arg = typeof args[i] === 'string' ? args[i] : String(args[i]);
+    for (let i = 0; i < resolvedArgs.length; i++) {
+      const arg = typeof resolvedArgs[i] === 'string' ? resolvedArgs[i] : String(resolvedArgs[i]);
       if (arg.length === 0) {
         continue;
       }
@@ -77,7 +79,7 @@ export default class Chopsticks {
         continue;
       }
 
-      const result = utils.parseArg(arg, args[i + 1], this);
+      const result = utils.parseArg(arg, resolvedArgs[i + 1], this);
       result.flags.forEach((flag) => {
         const attribute = flag.getAttribute();
         if (this.unknownFn && attribute.unknown) {
@@ -89,8 +91,8 @@ export default class Chopsticks {
         if (attribute.array) {
           const j = _get(container.flags, origin, []).length;
           let k = 0;
-          for (; i < args.length; i++) {
-            const value = args[i + 1];
+          for (; i < resolvedArgs.length; i++) {
+            const value = resolvedArgs[i + 1];
             const path = `${origin}[${j}][${k}]`;
             if (flag.isValidValue(value, this)) {
               this.setValue(container.flags, path, value, attribute);
@@ -144,6 +146,52 @@ export default class Chopsticks {
     }
 
     return this.finalize(container);
+  }
+
+  /**
+  * @method resolveNest
+  * @param {string[]} args - a command line arguments
+  * @returns {array} resolvedArgs
+  */
+  resolveNest(args) {
+    const resolvedArgs = [];
+
+    let level = 0;
+    let nest = null;
+    for (let i = 0; i < args.length; i++) {
+      const levelUp = args[i][0] === '[';
+      const levelDown = args[i].slice(-1) === ']';
+      const content = args[i].replace(/(^\[|\]$)/g, '');
+      if (levelUp) {
+        level++;
+        if (level === 1) {
+          nest = [];
+          if (content.length) {
+            nest.push(content);
+          }
+          continue;
+        }
+      }
+      if (levelDown) {
+        level--;
+        if (level === 0) {
+          if (content.length) {
+            nest.push(content);
+          }
+          resolvedArgs.push(this.parse(nest));
+          nest = null;
+          continue;
+        }
+      }
+
+      if (nest) {
+        nest.push(args[i]);
+      } else {
+        resolvedArgs.push(args[i]);
+      }
+    }
+
+    return resolvedArgs;
   }
 
   /**

@@ -115,6 +115,17 @@ Usage
   // }
   ```
 
+- [x] `opts.nest` - if `true`, recursively parsing the inside of brackets (`[]`). like a [browserify syntax(aka subarg)](https://github.com/substack/subarg#subarg)
+
+  ```js
+  // $ node program.js rawr --beep [ boop -a 3 ] -n4 --robots [ -x 8 -y 6 ]
+  parse(process.argv.slice(2), { nest: true });
+  // { _: [ 'rawr' ],
+  // beep: { _: [ 'boop' ], a: 3 },
+  // n: 4,
+  // robots: { _: [], x: 8, y: 6 } }
+  ```
+
 Stacktrace was broken
 ---
 ```bash

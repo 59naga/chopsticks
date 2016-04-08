@@ -28,8 +28,8 @@
     }
   },
   "devDependencies": {
+    "@59naga/array.from": "^2.0.2",
     "abigail": "^1.3.5",
-    "array-from": "59naga/array-from#9cd0f1ce9a0e0adbfd21d9b7b735bc5765ba969e",
     "assert-polyfill": "^0.0.0",
     "babel-cli": "^6.6.5",
     "babel-eslint": "^6.0.2",
