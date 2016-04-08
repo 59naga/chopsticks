@@ -1,3 +1,22 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/59naga/chopsticks/compare/v0.2.0...v0.3.0) (2016-04-08)
+
+
+### Bug Fixes
+
+* **build:** fix #2 ([43391f2](https://github.com/59naga/chopsticks/commit/43391f2)), closes [#2](https://github.com/59naga/chopsticks/issues/2)
+
+### Features
+
+* **sentence:** handle with single right comma as a sentence ([32ad447](https://github.com/59naga/chopsticks/commit/32ad447))
+
+
+### BREAKING CHANGES
+
+* sentence: 
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/59naga/chopsticks/compare/v0.0.2...v0.2.0) (2016-04-07)
 
