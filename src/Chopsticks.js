@@ -50,7 +50,7 @@ export default class Chopsticks {
   * @returns {object} argv - the parsed options
   */
   parse(args) {
-    if (process.env.NODE_ENV !== 'minimist' && args instanceof Array === false) {
+    if (process.env.NODE_ENV === 'production' && args instanceof Array === false) {
       throw new TypeError('args is not an array');
     }
 
@@ -85,12 +85,13 @@ export default class Chopsticks {
             return;
           }
         }
+        const origin = flag.getOrigin();
         if (attribute.array) {
-          const j = _get(container.flags, flag.origin, []).length;
+          const j = _get(container.flags, origin, []).length;
           let k = 0;
           for (; i < args.length; i++) {
             const value = args[i + 1];
-            const path = `${flag.origin}[${j}][${k}]`;
+            const path = `${origin}[${j}][${k}]`;
             if (flag.isValidValue(value, this)) {
               this.setValue(container.flags, path, value, attribute);
               k++;
@@ -100,11 +101,11 @@ export default class Chopsticks {
           }
           result.validNext = false;
         } else if (flag.value !== undefined) {
-          this.setValue(container.flags, flag.origin, flag.value, attribute);
+          this.setValue(container.flags, origin, flag.value, attribute);
         } else if (attribute.string) {
-          this.setValue(container.flags, flag.origin, '');
+          this.setValue(container.flags, origin, '');
         } else {
-          this.setValue(container.flags, flag.origin, true);
+          this.setValue(container.flags, origin, true);
         }
       });
       if (result.validNext) {
@@ -250,7 +251,7 @@ export default class Chopsticks {
       ...container.flags,
       _: container._,
     };
-    if (process.env.NODE_ENV === 'chopsticks') {
+    if (process.env.NODE_ENV === undefined) {
       params.flagCount = container.flagCount;
     }
     if (this['--']) {

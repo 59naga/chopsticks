@@ -61,20 +61,8 @@ Usage
   //     "huh"
   //   ],
   //   "unknown": [
-  //     {
-  //       "type": "short",
-  //       "origin": "f",
-  //       "alias": [],
-  //       "name": "f",
-  //       "value": "true"
-  //     },
-  //     {
-  //       "type": "long",
-  //       "origin": "foo",
-  //       "alias": [],
-  //       "name": "foo",
-  //       "value": false
-  //     },
+  //     Flag { type: 'short', name: 'f', value: 'true' },
+  //     Flag { type: 'short', name: 'foo', value: false },
   //     "true",
   //     "noop!"
   //   ]

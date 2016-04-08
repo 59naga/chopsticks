@@ -33,6 +33,7 @@ script:
 
 # Npm publish options
 before_deploy:
+  - export NODE_ENV=production
   - npm run build
 deploy:
   skip_cleanup: true # keep the devDependencies

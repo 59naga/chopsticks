@@ -4,6 +4,10 @@ import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 import uglify from 'rollup-plugin-uglify';
 
+if (process.env.NODE_ENV === undefined) {
+  process.env.NODE_ENV = 'minimist';
+}
+
 export default {
   entry: 'src/index.js',
   dest: 'lib/index.js',

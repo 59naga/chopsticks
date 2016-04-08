@@ -1,4 +1,5 @@
 // no dependencies
+const ORIGIN = Symbol('origin');
 const ALIAS = Symbol('alias');
 const ATTRIBUTE = Symbol('attribute');
 
@@ -10,9 +11,17 @@ export default class Flag {
     this.value = value;
 
     const aliases = opts.aliases || {};
-    this.origin = this.resolveName(this.name, aliases);
-    this[ALIAS] = [].concat(aliases[this.origin] || []);
+    this[ORIGIN] = this.resolveName(this.name, aliases);
+    this[ALIAS] = [].concat(aliases[this[ORIGIN]] || []);
     this[ATTRIBUTE] = this.createAttribute(opts);
+  }
+
+  /**
+  * @method getOrigin
+  * @returns {string} ORIGIN - a original name
+  */
+  getOrigin() {
+    return this[ORIGIN];
   }
 
   /**
@@ -20,8 +29,9 @@ export default class Flag {
   * @returns {string[]} names - a origin and alias names
   */
   getNames() {
-    return [this.origin].concat(this[ALIAS] || []);
+    return [this[ORIGIN]].concat(this[ALIAS] || []);
   }
+
   /**
   * @method getAttribute
   * @returns {object} attribute
@@ -93,7 +103,7 @@ export default class Flag {
         break;
       }
     }
-    const alias = this.origin !== this.name;
+    const alias = this[ORIGIN] !== this.name;
     const unknown = (source || alias || boolean || string || array) === false;
 
     return { source, alias, boolean, string, array, unknown };
