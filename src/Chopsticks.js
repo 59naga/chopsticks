@@ -148,7 +148,6 @@ export default class Chopsticks {
 
   /**
   * @method normalize
-  * @param {string} flag - a confirm the definition name
   * @param {any} value - a value to be normalized
   * @param {object} attribute - a flag attribute
   * @returns {any} value - the normalized value
