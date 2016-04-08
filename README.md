@@ -62,7 +62,7 @@ Usage
   //   ],
   //   "unknown": [
   //     Flag { type: 'short', name: 'f', value: 'true' },
-  //     Flag { type: 'short', name: 'foo', value: false },
+  //     Flag { type: 'long', name: 'foo', value: false },
   //     "true",
   //     "noop!"
   //   ]
