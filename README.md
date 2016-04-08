@@ -85,10 +85,10 @@ Usage
   // }
   ```
 
-- [x] `opts.sentence` - if `true`, comma nearby argument, is defined in "sentence". and ignore the last period of the argument. (like an [abigail](https://github.com/abigailjs/abigail#usage))
+- [x] `opts.sentence` - if `true`, argument with right-comma/right-period, is defined in "sentence". (like an [abigail](https://github.com/abigailjs/abigail#usage))
 
   ```js
-  // $ node program.js cover, lint, report. 'foo bar', baz. huh -- huh
+  // $ node program.js lorem. cover, lint, report. 'foo bar', baz. huh -- huh
   parse(process.argv.slice(2), { sentence: true });
   // {
   //   "_": [
@@ -96,6 +96,7 @@ Usage
   //     "huh"
   //   ],
   //   "sentence": [
+  //     ['lorem'],
   //     ['cover', 'lint', 'report'],
   //     ['foo bar', 'baz']
   //   ]

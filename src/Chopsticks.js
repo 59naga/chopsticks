@@ -112,16 +112,22 @@ export default class Chopsticks {
         i++;
       }
       if (result.flags.length === 0 && this.sentence) {
+        const delimiter = /[,.]$/;
+
+        const words = arg.replace(delimiter, '');
+        const hasDelimiter = (arg.match(delimiter) || [])[0];
         if (inSentence) {
-          const words = arg.replace(/[,.]$/, '');
           container.sentence[container.sentence.length - 1].push(words);
-          if (arg.slice(-1) !== ',') {
+          if (hasDelimiter !== ',') {
             inSentence = false;
           }
           continue;
-        } else if (arg.slice(-1) === ',') {
+        } else if (hasDelimiter === ',') {
           inSentence = true;
-          container.sentence.push([arg.slice(0, -1)]);
+          container.sentence.push([words]);
+          continue;
+        } else if (hasDelimiter === '.') {
+          container.sentence.push([words]);
           continue;
         }
       }

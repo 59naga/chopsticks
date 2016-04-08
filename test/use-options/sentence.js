@@ -18,7 +18,7 @@ describe('use sentence option', () => {
     );
   });
 
-  it('with sentence, comma should be parsed', () => {
+  it('with sentence, right-comma should be parsed', () => {
     assert.deepStrictEqual(
       parse(shellParse('-f cover, lint.'), {
         sentence: true,
@@ -30,6 +30,25 @@ describe('use sentence option', () => {
           ['cover', 'lint'],
         ],
         _: [],
+      },
+    );
+  });
+
+  it('with sentence, right-period should be parsed as one sentence', () => {
+    assert.deepStrictEqual(
+      parse(shellParse('-f cover. lint. ,not-sentence'), {
+        sentence: true,
+      }),
+      {
+        flagCount: 1,
+        f: true,
+        sentence: [
+          ['cover'],
+          ['lint'],
+        ],
+        _: [
+          ',not-sentence',
+        ],
       },
     );
   });

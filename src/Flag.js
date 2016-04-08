@@ -131,7 +131,7 @@ export default class Flag {
     if (latter === '-') {
       return true;
     }
-    if (opts.sentence === true && latter.slice(-1) === ',') {
+    if (opts.sentence === true && latter.slice(-1).match(/[,.]/)) {
       return false;
     }
     if (latter.slice(0, 1) === '-') {
