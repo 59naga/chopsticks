@@ -43,6 +43,7 @@ export default class Chopsticks {
     this['--'] = options['--'] === true;
     this.sentence = options.sentence === true;
     this.nest = options.nest === true;
+    this.nestArgs = [];
   }
 
   /**
@@ -148,6 +149,15 @@ export default class Chopsticks {
     return this.finalize(container);
   }
 
+  getName(arg) {
+    const result = utils.parseArg(arg, true, this);
+    const lastFlag = result.flags[result.flags.length - 1] || {};
+    if (lastFlag.name && lastFlag.name.length) {
+      return lastFlag.name;
+    }
+
+    return '_';
+  }
   /**
   * @method resolveNest
   * @param {string[]} args - a command line arguments
@@ -166,6 +176,7 @@ export default class Chopsticks {
         level++;
         if (level === 1) {
           nest = [];
+          this.nestArgs.push(this.getName(args[i - 1]));
           if (content.length) {
             nest.push(content);
           }
@@ -179,6 +190,7 @@ export default class Chopsticks {
             nest.push(content);
           }
           resolvedArgs.push(this.parse(nest));
+          this.nestArgs.pop();
           nest = null;
           continue;
         }
@@ -263,43 +275,45 @@ export default class Chopsticks {
   * @returns {object} argv - the parsed object like a minimist
   */
   finalize(container = {}) {
-    Object.keys(this.defaults).forEach((flag) => {
-      const value = _get(container.flags, flag);
-      if (value === undefined) {
-        _set(container.flags, flag, this.defaults[flag]);
-      }
-    });
-
-    this.arrays.forEach((flag) => {
-      if (_get(container.flags, flag) === undefined) {
-        _set(container.flags, flag, []);
-      }
-    });
-
-    // @see https://github.com/substack/minimist/blob/1.2.0/test/bool.js#L4
-    this.booleans.forEach((flag) => {
-      if (_get(container.flags, flag) === undefined) {
-        _set(container.flags, flag, false);
-      }
-    });
-
-    // @see github.com/substack/minimist/blob/1.2.0/test/parse.js#L82-L145
-    this.strings.forEach((flag) => {
-      if (_get(container.flags, flag) === undefined) {
-        _set(container.flags, flag, '');
-      }
-    });
-
-    Object.keys(this.aliases).forEach((origin) => {
-      this.aliases[origin].forEach((alias) => {
-        const value = _get(container.flags, origin);
+    if (this.nestArgs.length === 0) {
+      Object.keys(this.defaults).forEach((flag) => {
+        const value = _get(container.flags, flag);
         if (value === undefined) {
-          return;
+          _set(container.flags, flag, this.defaults[flag]);
         }
-
-        _set(container.flags, alias, value);
       });
-    });
+
+      this.arrays.forEach((flag) => {
+        if (_get(container.flags, flag) === undefined) {
+          _set(container.flags, flag, []);
+        }
+      });
+
+      // @see https://github.com/substack/minimist/blob/1.2.0/test/bool.js#L4
+      this.booleans.forEach((flag) => {
+        if (_get(container.flags, flag) === undefined) {
+          _set(container.flags, flag, false);
+        }
+      });
+
+      // @see github.com/substack/minimist/blob/1.2.0/test/parse.js#L82-L145
+      this.strings.forEach((flag) => {
+        if (_get(container.flags, flag) === undefined) {
+          _set(container.flags, flag, '');
+        }
+      });
+
+      Object.keys(this.aliases).forEach((origin) => {
+        this.aliases[origin].forEach((alias) => {
+          const value = _get(container.flags, origin);
+          if (value === undefined) {
+            return;
+          }
+
+          _set(container.flags, alias, value);
+        });
+      });
+    }
 
     const params = {
       ...container.flags,

@@ -1,4 +1,5 @@
 // no dependencies
+const ABSOLUTE = Symbol('absolute');
 const ORIGIN = Symbol('origin');
 const ALIAS = Symbol('alias');
 const ATTRIBUTE = Symbol('attribute');
@@ -10,8 +11,10 @@ export default class Flag {
     this.name = name;
     this.value = value;
 
+    const nestArgs = opts.nestArgs || [];
     const aliases = opts.aliases || {};
-    this[ORIGIN] = this.resolveName(this.name, aliases);
+    this[ABSOLUTE] = nestArgs.length ? nestArgs.concat(name).join('.') : name;
+    this[ORIGIN] = this.resolveName(aliases);
     this[ALIAS] = [].concat(aliases[this[ORIGIN]] || []);
     this[ATTRIBUTE] = this.createAttribute(opts);
   }
@@ -29,7 +32,7 @@ export default class Flag {
   * @returns {string[]} names - a origin and alias names
   */
   getNames() {
-    return [this[ORIGIN]].concat(this[ALIAS] || []);
+    return [this[ORIGIN], this[ABSOLUTE]].concat(this[ALIAS] || []);
   }
 
   /**
@@ -43,20 +46,19 @@ export default class Flag {
 
   /**
   * @module resolveName
-  * @param {string} flag - an unknown alias flag
   * @param {object} aliases - an define of aliases
   * @returns {string} flag - the original name
   */
-  resolveName(flag, aliases = {}) {
+  resolveName(aliases = {}) {
     for (const origin in aliases) {
-      if (origin === flag) {
-        return origin;
+      if (origin === this[ABSOLUTE]) {
+        return this.name;
       }
-      if (aliases[origin].indexOf(flag) > -1) {
+      if (aliases[origin].indexOf(this[ABSOLUTE]) > -1) {
         return origin;
       }
     }
-    return flag;
+    return this.name;
   }
 
   /**

@@ -286,7 +286,7 @@ describe('use many options(high complexity)', () => {
       );
     });
 
-    xit('array', () => {
+    it('array', () => {
       assert.deepStrictEqual(
         parse('--foo [ --bar [ --baz=beep ] [ --boop ] ]'.split(' '), {
           nest: true,
@@ -310,6 +310,66 @@ describe('use many options(high complexity)', () => {
                 },
               ],
             ],
+            flagCount: 1,
+          },
+          flagCount: 1,
+        },
+      );
+    });
+
+    it('boolean', () => {
+      assert.deepStrictEqual(
+        parse('--foo [ --bar [ --baz=beep ] [ --boop ] ]'.split(' '), {
+          nest: true,
+          boolean: 'foo.bar',
+        }),
+        {
+          _: [],
+          foo: {
+            _: [
+              {
+                _: [],
+                baz: 'beep',
+                flagCount: 1,
+              },
+              {
+                _: [],
+                boop: true,
+                flagCount: 1,
+              },
+            ],
+            bar: true,
+            flagCount: 1,
+          },
+          flagCount: 1,
+        },
+      );
+    });
+
+    xit('default', () => {
+      assert.deepStrictEqual(
+        parse('--foo [ --bar [ --baz=beep ] [ --boop ] ]'.split(' '), {
+          nest: true,
+          default: {
+            'foo.bar.kaboom': true,
+          },
+        }),
+        {
+          _: [],
+          foo: {
+            _: [
+              {
+                _: [],
+                boop: true,
+                flagCount: 1,
+              },
+            ],
+            bar: {
+              _: [],
+              baz: 'beep',
+              kaboom: true,
+              flagCount: 2, // actual 1, todo
+            },
             flagCount: 1,
           },
           flagCount: 1,
