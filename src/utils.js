@@ -80,6 +80,15 @@ export function parseShortFlags(name, value, opts = {}) {
 }
 
 /**
+* @module isntFlag
+* @param {string} arg - a command line argument
+* @returns {boolean} isntFlag - the argument is flag
+*/
+export function isntFlag(arg) {
+  return typeof arg !== 'string' || arg.slice(0, 1) !== '-' || arg === '-' || arg === '--';
+}
+
+/**
 * @module parseArg
 * @param {string} arg - a command line argument
 * @param {string} nextArg - a next command line argument
@@ -87,8 +96,7 @@ export function parseShortFlags(name, value, opts = {}) {
 * @returns {object} flagObjects - the argument parse result
 */
 export function parseArg(arg, nextArg, opts = {}) {
-  const notFlag = arg.slice(0, 1) !== '-' || arg === '-' || arg === '--';
-  if (notFlag) {
+  if (isntFlag(arg)) {
     return { flags: [], validNext: false };
   }
 

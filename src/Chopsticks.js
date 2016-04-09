@@ -61,7 +61,7 @@ export default class Chopsticks {
     let noParse = false;
     let inSentence = false;
     for (let i = 0; i < resolvedArgs.length; i++) {
-      const arg = typeof resolvedArgs[i] === 'string' ? resolvedArgs[i] : String(resolvedArgs[i]);
+      const arg = typeof resolvedArgs[i] === 'number' ? String(resolvedArgs[i]) : resolvedArgs[i];
       if (arg.length === 0) {
         continue;
       }

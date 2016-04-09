@@ -233,4 +233,88 @@ describe('use many options(high complexity)', () => {
     assert(params.a === params.bar);
     assert(params.r === params.bar);
   });
+
+  describe('nest', () => {
+    it('dash', () => {
+      assert.deepStrictEqual(
+        parse('[ boop -o a.txt -o [b.txt -q -- foo] -- bar ] -- baz'.split(' '), {
+          nest: true,
+          dash: true,
+        }),
+        {
+          _: [
+            {
+              flagCount: 1,
+              _: ['boop'],
+              o: ['a.txt', {
+                _: ['b.txt'],
+                flagCount: 1,
+                q: true,
+                dash: ['foo'],
+              }],
+              dash: ['bar'],
+            },
+          ],
+          dash: ['baz'],
+          flagCount: 0,
+        },
+      );
+    });
+
+    it('alias', () => {
+      assert.deepStrictEqual(
+        parse('--foo [ --bar [ --baz=beep ] ]'.split(' '), {
+          nest: true,
+          alias: {
+            'foo.bar.baz': 'okComputer',
+          },
+        }),
+        {
+          _: [],
+          foo: {
+            _: [],
+            bar: {
+              _: [],
+              baz: 'beep',
+              flagCount: 1,
+            },
+            flagCount: 1,
+          },
+          okComputer: 'beep',
+          flagCount: 2,
+        },
+      );
+    });
+
+    xit('array', () => {
+      assert.deepStrictEqual(
+        parse('--foo [ --bar [ --baz=beep ] [ --boop ] ]'.split(' '), {
+          nest: true,
+          array: 'foo.bar',
+        }),
+        {
+          _: [],
+          foo: {
+            _: [],
+            bar: [
+              [
+                {
+                  _: [],
+                  baz: 'beep',
+                  flagCount: 1,
+                },
+                {
+                  _: [],
+                  boop: true,
+                  flagCount: 1,
+                },
+              ],
+            ],
+            flagCount: 1,
+          },
+          flagCount: 1,
+        },
+      );
+    });
+  });
 });
