@@ -149,7 +149,12 @@ export default class Chopsticks {
     return this.finalize(container);
   }
 
-  getName(arg) {
+  /**
+  * @method getFlagName
+  * @param {string} arg - a command line argument
+  * @returns {array} name - the current flag name
+  */
+  getFlagName(arg) {
     const result = utils.parseArg(arg, true, this);
     const lastFlag = result.flags[result.flags.length - 1] || {};
     if (lastFlag.name && lastFlag.name.length) {
@@ -176,7 +181,7 @@ export default class Chopsticks {
         level++;
         if (level === 1) {
           nest = [];
-          this.nestArgs.push(this.getName(args[i - 1]));
+          this.nestArgs.push(this.getFlagName(args[i - 1]));
           if (content.length) {
             nest.push(content);
           }
