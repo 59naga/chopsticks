@@ -163,6 +163,7 @@ export default class Chopsticks {
 
     return '_';
   }
+
   /**
   * @method resolveNest
   * @param {string[]} args - a command line arguments
