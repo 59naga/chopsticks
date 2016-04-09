@@ -1,6 +1,15 @@
-<a name="0.5.0"></a>
-# [0.5.0](https://github.com/59naga/chopsticks/compare/v0.4.0...v0.5.0) (2016-04-08)
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/59naga/chopsticks/compare/v0.4.0...v0.5.1) (2016-04-09)
 
+
+### Bug Fixes
+
+* **nest:** fix nest with mixin issues ([aecffa0](https://github.com/59naga/chopsticks/commit/aecffa0))
+* **nest:** unonymous argument parsing error ([16ef04c](https://github.com/59naga/chopsticks/commit/16ef04c))
+
+### Features
+
+* **nest:** add `nest` option ([034ca84](https://github.com/59naga/chopsticks/commit/034ca84))
 
 
 
