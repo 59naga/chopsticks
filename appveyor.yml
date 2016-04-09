@@ -1,6 +1,11 @@
 build: off
 deploy: off
 
+# Ignore version tags
+branches:
+  except:
+  - /^v[0-9]/
+
 environment:
   nodejs_version: "4"
 
