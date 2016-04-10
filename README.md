@@ -1,4 +1,4 @@
-Chopsticks
+![Chopsticks](https://cloud.githubusercontent.com/assets/1548478/14408405/822af84a-ff2e-11e5-81d9-9d2d05f48911.gif)
 ---
 
 <p align="right">
