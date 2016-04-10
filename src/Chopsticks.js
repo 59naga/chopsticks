@@ -115,10 +115,8 @@ export default class Chopsticks {
         i++;
       }
       if (result.flags.length === 0 && this.sentence) {
-        const delimiter = /[,.]$/;
-
-        const words = arg.replace(delimiter, '');
-        const hasDelimiter = (arg.match(delimiter) || [])[0];
+        const hasDelimiter = (arg.match(/[^ ]([,.])$/) || [])[1];
+        const words = hasDelimiter ? arg.replace(/[,.]$/, '') : arg;
         if (inSentence) {
           container.sentence[container.sentence.length - 1].push(words);
           if (hasDelimiter !== ',') {

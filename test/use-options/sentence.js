@@ -71,4 +71,24 @@ describe('use sentence option', () => {
       },
     );
   });
+
+  describe('issues', () => {
+    it('#4: should not delete the period of the shell command', () => {
+      assert.deepStrictEqual(
+        parse(shellParse("'cp foo/bar .' cover, lint, report. -- huh"), {
+          sentence: true,
+        }),
+        {
+          flagCount: 0,
+          sentence: [
+            ['cover', 'lint', 'report'],
+          ],
+          _: [
+            'cp foo/bar .',
+            'huh',
+          ],
+        },
+      );
+    });
+  });
 });
