@@ -1,3 +1,13 @@
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/59naga/chopsticks/compare/v0.5.1...v0.5.2) (2016-04-10)
+
+
+### Bug Fixes
+
+* **Chopsticks.parse:** fix #4 ([86d7b85](https://github.com/59naga/chopsticks/commit/86d7b85)), closes [#4](https://github.com/59naga/chopsticks/issues/4)
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/59naga/chopsticks/compare/v0.4.0...v0.5.1) (2016-04-09)
 
