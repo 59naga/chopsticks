@@ -1,4 +1,4 @@
-import assert from 'power-assert';
+import assert from 'assert';
 
 // target
 import parse from '../../src';

@@ -1,5 +1,5 @@
 // @see github.com/substack/minimist/tree/1.2.0/test/short.js
-import assert from 'power-assert';
+import assert from 'assert';
 
 // target
 import parse from '../../src';

@@ -1,5 +1,5 @@
 // dependencies
-import assert from 'power-assert';
+import assert from 'assert';
 import sinon from 'sinon';
 
 // target

@@ -15,6 +15,7 @@ import Chopsticks from './Chopsticks';
 * @param {boolean|function} [options.unknown] - to handle an undefined argument.
 * @param {boolean|function} [options.comma] - if argument is separated by a comma, to the array
 * @param {string|string[]} [options.array] - argument subsequent to flag is the value
+* @param {boolean|string|string[]} [options.object] - the value of the flag is a object
 * @returns {object} argv - a parsed properties
 * @see https://github.com/substack/minimist/blob/1.2.0/#readme
 */

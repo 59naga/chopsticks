@@ -1,5 +1,5 @@
 // @see github.com/substack/minimist/blob/1.2.0/test/unknown.js
-import assert from 'power-assert';
+import assert from 'assert';
 import { parse as shellParse } from 'shell-quote';
 import sinon from 'sinon';
 

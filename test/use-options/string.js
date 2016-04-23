@@ -1,5 +1,5 @@
 // @see github.com/substack/minimist/blob/1.2.0/test/parse.js#L82-L145
-import assert from 'power-assert';
+import assert from 'assert';
 
 // target
 import parse from '../../src';
