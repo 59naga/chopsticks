@@ -1,4 +1,4 @@
-// no dependencies
+// TODO: IE10 or less compatibility (`Symbol is undefined`)
 const ABSOLUTE = Symbol('absolute');
 const ORIGIN = Symbol('origin');
 const ALIAS = Symbol('alias');
@@ -76,6 +76,7 @@ export default class Flag {
     let boolean = false;
     let string = false;
     let array = false;
+    let object = false;
 
     this.getNames().forEach((name) => {
       if (boolean === false) {
@@ -96,6 +97,13 @@ export default class Flag {
           array = true;
         }
       }
+      if (object === false) {
+        if (opts.objects && opts.objects.indexOf(name) > -1) {
+          object = true;
+        } else if (object === false) {
+          object = opts.all === 'object' && this.type === 'long' && this.value === undefined;
+        }
+      }
     });
 
     let source = false;
@@ -106,9 +114,9 @@ export default class Flag {
       }
     }
     const alias = this[ORIGIN] !== this.name;
-    const unknown = (source || alias || boolean || string || array) === false;
+    const unknown = (source || alias || boolean || string || array || object) === false;
 
-    return { source, alias, boolean, string, array, unknown };
+    return { source, alias, boolean, string, array, object, unknown };
   }
 
   /**

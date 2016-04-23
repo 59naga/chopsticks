@@ -23,10 +23,13 @@ export default class Chopsticks {
     this.all = false;
     if (options.boolean === true) {
       this.all = 'boolean';
+    } else if (options.object === true) {
+      this.all = 'object';
     }
     this.strings = utils.toArray(options.string);
     this.booleans = utils.toArray(options.boolean);
     this.arrays = utils.toArray(options.array);
+    this.objects = utils.toArray(options.object);
 
     this.unknown = options.unknown;
     if (typeof options.unknown === 'function') {
@@ -105,6 +108,8 @@ export default class Chopsticks {
           result.validNext = false;
         } else if (flag.value !== undefined) {
           this.setValue(container.flags, origin, flag.value, attribute);
+        } else if (attribute.object) {
+          this.setValue(container.flags, origin, {});
         } else if (attribute.string) {
           this.setValue(container.flags, origin, '');
         } else {
@@ -217,6 +222,11 @@ export default class Chopsticks {
   * @returns {any} value - the normalized value
   */
   normalize(value, attribute = {}) {
+    if (attribute.object) {
+      const obj = {};
+      _set(obj, value, true);
+      return obj;
+    }
     if (attribute.boolean) {
       return value === 'true';
     }
@@ -287,9 +297,11 @@ export default class Chopsticks {
         }
       });
 
-      this.arrays.forEach((flag) => {
+
+      // @see github.com/substack/minimist/blob/1.2.0/test/parse.js#L82-L145
+      this.strings.forEach((flag) => {
         if (_get(container.flags, flag) === undefined) {
-          _set(container.flags, flag, []);
+          _set(container.flags, flag, '');
         }
       });
 
@@ -300,10 +312,15 @@ export default class Chopsticks {
         }
       });
 
-      // @see github.com/substack/minimist/blob/1.2.0/test/parse.js#L82-L145
-      this.strings.forEach((flag) => {
+      this.arrays.forEach((flag) => {
         if (_get(container.flags, flag) === undefined) {
-          _set(container.flags, flag, '');
+          _set(container.flags, flag, []);
+        }
+      });
+
+      this.objects.forEach((flag) => {
+        if (_get(container.flags, flag) === undefined) {
+          _set(container.flags, flag, {});
         }
       });
 
