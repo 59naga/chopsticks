@@ -85,6 +85,29 @@ Usage
   // }
   ```
 
+- [x] `opts.object` - if specify flag names, the value of the specify flag is handled as key of the object.
+
+  ```js
+  // $ node program.js -x one --y.two foo -z=three.baz
+  parse(process.argv.slice(2), { object: ['x', 'y', 'z'] });
+  // {
+  //   _: [],
+  //   x: {
+  //     one: true,
+  //   },
+  //   y: {
+  //     two: 'foo',
+  //   },
+  //   z: {
+  //     three: {
+  //       baz: true,
+  //     },
+  //   },
+  // },
+  ```
+
+  if `true`, will handle all long flag without equal signs as object (e.g. affects `--foo`, not `-f` or `--foo=bar`)
+
 - [x] `opts.sentence` - if `true`, argument with right-comma/right-period, is defined in "sentence". (like an [abigail](https://github.com/abigailjs/abigail#usage))
 
   ```js
